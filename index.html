@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Encuesta Universitaria + Mini Juego</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+body{background:#f4f6f9;padding:20px}
+.container{max-width:900px;margin:auto;background:white;padding:30px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.1)}
+h1{text-align:center;margin-bottom:15px}
+h2{margin:25px 0 15px;color:#007bff}
+.info{background:#eef6ff;border-left:4px solid #007bff;padding:15px;margin-bottom:25px;border-radius:6px}
+.question{margin-bottom:20px}
+label{display:block;margin-bottom:8px;font-weight:bold}
+input,textarea{width:100%;padding:12px;border:1px solid #ccc;border-radius:6px}
+textarea{min-height:90px}
+button{width:100%;padding:15px;border:none;border-radius:8px;background:#007bff;color:#fff;cursor:pointer;margin-top:10px}
+.loading{display:none;text-align:center;margin-top:15px}
+.game-card{background:#fafafa;border:1px solid #ddd;border-radius:10px;padding:20px;margin-bottom:20px}
+.game-card img{width:100%;max-height:250px;object-fit:cover;border-radius:10px;margin-bottom:15px}
+.progress-container{width:100%;height:20px;background:#ddd;border-radius:10px;overflow:hidden;margin-bottom:20px}
+.progress-bar{height:100%;width:0;background:#28a745;transition:.3s}
+.resultado{display:none;margin-top:20px;padding:20px;background:#eef6ff;border-left:5px solid #007bff}
+.option{margin:8px 0}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>Encuesta Universitaria</h1>
+<div class="info">Esta encuesta almacena respuestas en Firebase. Participación voluntaria.</div>
+
+<form id="encuestaForm">
+<h2>Información General</h2>
+<div class="question"><label>Nombre completo</label><input id="nombre" required></div>
+<div class="question"><label>Departamento y ciudad</label><input id="ubicacion" required></div>
+<div class="question"><label>Edad</label><input id="edad" type="number" required></div>
+<div class="question"><label>Correo electrónico</label><input id="correo" type="email" required></div>
+
+<h2>Preguntas</h2>
+<div class="question"><label>1. ¿Qué fue lo que te hizo escoger Educación Infantil?</label><textarea id="p1" required></textarea></div>
+<div class="question"><label>2. Si pudieras estudiar otra carrera por curiosidad, ¿cuál sería?</label><textarea id="p2" required></textarea></div>
+<div class="question"><label>3. ¿Qué es lo que más te gusta de trabajar con niños?</label><textarea id="p3" required></textarea></div>
+<div class="question"><label>4. ¿Cuál es la parte más exigente de tu carrera?</label><textarea id="p4" required></textarea></div>
+<div class="question"><label>5. ¿Qué es más importante para un profesional: conocimientos o habilidades sociales?</label><textarea id="p5" required></textarea></div>
+<div class="question"><label>6. ¿Cuál ha sido tu materia favorita hasta ahora?</label><textarea id="p6" required></textarea></div>
+<div class="question"><label>7. Cuando trabajas en grupo, ¿prefieres liderar o colaborar?</label><textarea id="p7" required></textarea></div>
+<div class="question"><label>8. ¿Qué valoras más en un compañero?</label><textarea id="p8" required></textarea></div>
+<div class="question"><label>9. ¿Qué te molesta más en los trabajos grupales?</label><textarea id="p9" required></textarea></div>
+<div class="question"><label>10. Si obtienes una mala nota, ¿cómo reaccionas?</label><textarea id="p10" required></textarea></div>
+<div class="question"><label>11. ¿Qué es lo que más te estresa de la universidad?</label><textarea id="p11" required></textarea></div>
+<div class="question"><label>12. ¿Cómo reaccionas cuando alguien piensa diferente a ti?</label><textarea id="p12" required></textarea></div>
+<div class="question"><label>13. ¿Dónde te gustaría trabajar cuando te gradúes?</label><textarea id="p13" required></textarea></div>
+<div class="question"><label>14. ¿Qué haces para desconectarte de la universidad?</label><textarea id="p14" required></textarea></div>
+<div class="question"><label>15. Si la universidad organizara un viaje académico gratis, ¿a dónde te gustaría ir?</label><textarea id="p15" required></textarea></div>
+
+<h2>🎮 Mini Juego</h2>
+<div class="progress-container"><div class="progress-bar" id="barra"></div></div>
+
+<div class="game-card">
+<img src="imagenes/biblioteca.jpg">
+<h3>Pregunta 1: La Biblioteca Misteriosa:Llegas a una biblioteca antigua. En una mesa hay tres objetos: ¿Cuál eliges primero?</h3>
+<div class="option"><input type="radio" name="g1" value="A"> Diario antiguo</div>
+<div class="option"><input type="radio" name="g1" value="B"> Mapa lleno de símbolos</div>
+<div class="option"><input type="radio" name="g1" value="C"> Caja cerrada</div>
+</div>
+
+<div class="game-card">
+<img src="imagenes/puente.png"">
+<h3>Pregunta 2: El Puente de la Isla:Estás en una isla y necesitas cruzar un río. Tienes tres opciones: ¿Qué haces?</h3>
+<div class="option"><input type="radio" name="g2" value="A"> Construyes una balsa</div>
+<div class="option"><input type="radio" name="g2" value="B"> Buscas una ruta en el mapa</div>
+<div class="option"><input type="radio" name="g2" value="C"> Preguntas a los habitantes</div>
+</div>
+
+<div class="game-card">
+<img src="imagenes/proyecto.png">
+<h3>Pregunta 3: El Proyecto Imposible
+
+Tu grupo recibe un proyecto que nadie entiende.¿Qué harías primero?</h3>
+<div class="option"><input type="radio" name="g3" value="A"> Lanzas ideas</div>
+<div class="option"><input type="radio" name="g3" value="B"> Lees instrucciones</div>
+<div class="option"><input type="radio" name="g3" value="C"> Escuchas a todos</div>
+</div>
+
+<div class="game-card">
+<img src="imagenes/puertas.png">
+<h3>Pregunta 4: La Puerta Secreta:
+
+Frente a ti aparecen tres puertas ¿Cuál abrirías?.</h3>
+<div class="option"><input type="radio" name="g4" value="A"> Puerta colorida</div>
+<div class="option"><input type="radio" name="g4" value="B"> Puerta mecánica</div>
+<div class="option"><input type="radio" name="g4" value="C"> Puerta con personas detrás</div>
+</div>
+
+<div class="game-card">
+<img src="imagenes/ultima.png">
+<h3>Pregunta 5: El Tesoro Oculto:
+
+Encuentras un cofre con tres recompensas posibles.
+¿Cuál eliges?
+</h3>
+<div class="option"><input type="radio" name="g5" value="A"> Cuaderno mágico</div>
+<div class="option"><input type="radio" name="g5" value="B"> Libro de respuestas</div>
+<div class="option"><input type="radio" name="g5" value="C"> Amuleto social</div>
+</div>
+
+<button type="button" onclick="calcularResultado()">Ver Resultado del Juego</button>
+<div id="resultadoJuego" class="resultado"></div>
+<input type="hidden" id="tipoPersona">
+
+<button type="submit">Enviar Encuesta</button>
+<div id="loading" class="loading">Guardando respuestas...</div>
+</form>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+const firebaseConfig = {
+apiKey:"AIzaSyAm3RMTaGA1gfq-NPxynKpmu6PoL5eyyHU",
+authDomain:"encuesta-1f81a.firebaseapp.com",
+projectId:"encuesta-1f81a",
+storageBucket:"encuesta-1f81a.firebasestorage.app",
+messagingSenderId:"447781005914",
+appId:"1:447781005914:web:3b72e35cfec22e02b5c663"
+};
+
+const app=initializeApp(firebaseConfig);
+const db=getFirestore(app);
+
+window.calcularResultado=function(){
+let r=[];
+for(let i=1;i<=5;i++){ let v=document.querySelector(`input[name="g${i}"]:checked`)?.value; if(!v){alert("Responde los 5 acertijos"); return;} r.push(v);}
+let a=r.filter(x=>x==="A").length,b=r.filter(x=>x==="B").length,c=r.filter(x=>x==="C").length;
+let resultado="";
+if(a>=b&&a>=c) resultado="🌟 Persona Creativa: te gusta imaginar, explorar nuevas ideas y encontrar soluciones originales.";
+else if(b>=a&&b>=c) resultado="🧠 Persona Analítica: te gusta comprender cómo funcionan las cosas antes de actuar.";
+else resultado="❤️ Persona Empática: valoras las personas, la colaboración y las relaciones humanas.";
+document.getElementById("tipoPersona").value=resultado;
+let div=document.getElementById("resultadoJuego");
+div.innerHTML="<h3>Resultado</h3><p>"+resultado+"</p>";
+div.style.display="block";
+};
+
+document.querySelectorAll('input[type="radio"]').forEach(el=>{
+el.addEventListener('change',()=>{
+let n=0;
+for(let i=1;i<=5;i++) if(document.querySelector(`input[name="g${i}"]:checked`)) n++;
+document.getElementById("barra").style.width=(n/5*100)+"%";
+});
+});
+
+document.getElementById("encuestaForm").addEventListener("submit", async(e)=>{
+e.preventDefault();
+document.getElementById("loading").style.display="block";
+try{
+let data = {
+
+    nombre: nombre.value,
+    ubicacion: ubicacion.value,
+    edad: edad.value,
+    correo: correo.value,
+
+    tipo_persona: tipoPersona.value,
+
+    juego: {
+        pregunta1: {
+            titulo: "La Biblioteca Misteriosa",
+            respuesta: document.querySelector('input[name="g1"]:checked')?.value || ""
+        },
+
+        pregunta2: {
+            titulo: "El Puente de la Isla",
+            respuesta: document.querySelector('input[name="g2"]:checked')?.value || ""
+        },
+
+        pregunta3: {
+            titulo: "El Proyecto Imposible",
+            respuesta: document.querySelector('input[name="g3"]:checked')?.value || ""
+        },
+
+        pregunta4: {
+            titulo: "La Puerta Secreta",
+            respuesta: document.querySelector('input[name="g4"]:checked')?.value || ""
+        },
+
+        pregunta5: {
+            titulo: "El Tesoro Oculto",
+            respuesta: document.querySelector('input[name="g5"]:checked')?.value || ""
+        }
+    },
+
+    fecha: serverTimestamp()
+};
+for(let i=1;i<=15;i++) data["p"+i]=document.getElementById("p"+i).value;
+await addDoc(collection(db,"encuestas"),data);
+alert("Encuesta enviada correctamente");
+e.target.reset();
+}catch(err){console.error(err);alert("Error al guardar");}
+document.getElementById("loading").style.display="none";
+});
+</script>
+</body>
+</html>
